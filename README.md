@@ -1,6 +1,4 @@
 Zen-Cart
 ========
 
-Zen Cart
-
-testing
+Soon there will be a guide for intallation and other great info.
