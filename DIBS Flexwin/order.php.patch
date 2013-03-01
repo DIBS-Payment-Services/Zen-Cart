@@ -1,0 +1,23 @@
+376,378c376
+< <!-- DIBS-PATCH-START colspan changed from 3 to 4 -->
+<             <td colspan="4"><?php echo zen_draw_separator(); ?></td>
+< <!-- DIBS-PATCH-END colspan changed from 3 to 4 -->
+---
+>             <td colspan="3"><?php echo zen_draw_separator(); ?></td>
+414,429d411
+< <!-- DIBS-PATCH-START this block inserted -->
+<             <?php if(isset($order->info['payment_module_code']) && $order->info['payment_module_code'] == 'dibsflex') { ?>
+<                 <td valign="top">
+<                     <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<                         <tr>
+<                             <td class="main" valign="top"><strong><?php echo MODULE_PAYMENT_DIBSFLEX_CONTROLS_TITLE; ?></strong></td>
+<                             <td class="main" valign="top">
+<                                 <?php
+<                                     echo $module->cms_dibs_cgi_getButtonsRealID($oID);
+<                                 ?>
+<                             </td>
+<           </tr>
+<                     </table>
+<                   </td>
+<             <?php } ?>
+< <!-- DIBS-PATCH-END this block inserted -->

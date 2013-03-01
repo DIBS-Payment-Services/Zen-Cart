@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+        <title>#redirtitle_msg#</title>
+        <script type="text/javascript">
+            window.addEventListener('load', function() {
+                setTimeout(document.getElementById('dibs-fw-success').submit(), 1);
+            }, false);
+        </script>
+    </head>
+    <body>
+        <p>#redir_msg#</p>
+        <form action="#redir_link#" method="post" id="dibs-fw-success">
+            <div>
+                #form_content#
+                <input type="submit" value="#toshop_msg#" />
+            </div>
+        </form>
+    </body>
+</html>
