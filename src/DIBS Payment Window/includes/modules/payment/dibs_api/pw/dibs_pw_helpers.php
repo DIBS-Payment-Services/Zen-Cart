@@ -126,7 +126,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
             
             $aItems[] = (object)array(
                 'id'         => $mItem['id'],
-                'name'       => preg_replace($search, $replace, $mItem['name']),
+                'name'       => str_replace($search, $replace, $mItem['name']),
                 'sku'        => $mItem['model'],
                 'price'      => zen_round($sTmpPrice, $iDec),
                 'qty'        => $mItem['qty'],
