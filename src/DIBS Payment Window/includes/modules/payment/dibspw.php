@@ -1,6 +1,5 @@
 <?php
 /*
-  
   $Id$
 
   DIBS module for ZenCart
