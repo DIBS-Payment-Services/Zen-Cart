@@ -44,9 +44,9 @@
   define('MODULE_PAYMENT_DIBSPW_ERR_5',             "No currency type was returned from DIBS payment 
                                                         gateway.");
   define('MODULE_PAYMENT_DIBSPW_ERR_7',             "The fingerprint key does not match.");
-  define('TITLE_CONTINUE_CHECKOUT_PROCEDURE',           'Process online payment transaction');
+/*  define('TITLE_CONTINUE_CHECKOUT_PROCEDURE',           'Process online payment transaction');
   define('TEXT_CONTINUE_CHECKOUT_PROCEDURE',            'and finish the order process');
   define('NAVBAR_TITLE_1',                              'Checkout');
   define('NAVBAR_TITLE_2',                              'Transaction');
-  define('CHECKOUT_BAR_ONLINE_PAYMENT',                 'Transaction');
+  define('CHECKOUT_BAR_ONLINE_PAYMENT',                 'Transaction');*/
 ?>
