@@ -53,4 +53,3 @@
     define('NAVBAR_TITLE_2',                              'Transaction');
     define('CHECKOUT_BAR_ONLINE_PAYMENT',                 'Transaction');*/
   }
-

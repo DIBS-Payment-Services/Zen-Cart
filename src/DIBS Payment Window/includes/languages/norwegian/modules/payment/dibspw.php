@@ -48,4 +48,3 @@
     define('NAVBAR_TITLE_2', 'Transaksjon');
     define('CHECKOUT_BAR_ONLINE_PAYMENT', 'Transaksjon');*/
   }
-
