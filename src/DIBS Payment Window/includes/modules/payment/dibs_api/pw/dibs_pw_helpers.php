@@ -120,9 +120,13 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
             
             $mItem['tax'] = isset($mItem['tax']) ? $mItem['tax'] : '0';
             
+            // Quickfix for issues with quotation marks
+            $search = array('\'','"');
+            $replace = array('','');
+            
             $aItems[] = (object)array(
                 'id'         => $mItem['id'],
-                'name'       => $mItem['name'],
+                'name'       => preg_replace($search, $replace, $mItem['name']),
                 'sku'        => $mItem['model'],
                 'price'      => zen_round($sTmpPrice, $iDec),
                 'qty'        => $mItem['qty'],
