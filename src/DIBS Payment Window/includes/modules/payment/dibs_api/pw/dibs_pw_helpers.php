@@ -106,7 +106,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      * @param mixed $mOrderInfo
      * @return object 
      */
-    function helper_dibs_obj_items($mOrderInfo) {
+    /*function helper_dibs_obj_items($mOrderInfo) {
         global $currencies;
         
         $iDec = $currencies->get_decimal_places($mOrderInfo->info['currency']);
@@ -131,7 +131,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
         }
         
         return $aItems;
-    }
+    }*/
     
     /**
      * Build CMS shipping information to API object.
@@ -139,7 +139,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      * @param mixed $mOrderInfo
      * @return object 
      */
-    function helper_dibs_obj_ship($mOrderInfo) {
+    /*function helper_dibs_obj_ship($mOrderInfo) {
         global $currencies;
         
         $iDec = $currencies->get_decimal_places($mOrderInfo->info['currency']);        
@@ -159,7 +159,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
                 'qty'        => 1,
                 'tax'        => zen_round($sTax, $iDec)
         );
-    }
+    }*/
     
     /**
      * Build CMS customer addresses to API object.
