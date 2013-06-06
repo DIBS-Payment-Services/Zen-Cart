@@ -121,6 +121,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         $oOrder = $this->api_dibs_commonOrderObject($mOrderInfo);
         $this->api_dibs_prepareDB($oOrder->order->orderid);
         $this->api_dibs_commonFields($aData, $oOrder);
+		$this->api_dibs_invoiceFields($aData, $mOrderInfo);
         if(count($oOrder->etc) > 0) {
             foreach($oOrder->etc as $sKey => $sVal) $aData['s_' . $sKey] = $sVal;
         }
@@ -156,7 +157,48 @@ class dibs_pw_api extends dibs_pw_helpers {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
     }
-   
+    
+    /**
+     * Adds Invoice API parameters specific for SAT PW.
+     * 
+     * @param array $aData
+     * @param object $oOrder 
+     */
+    private function api_dibs_invoiceFields(&$aData, $mOrderInfo) {
+        $oOrder = $this->api_dibs_invoiceOrderObject($mOrderInfo);
+        foreach($oOrder->addr as $sKey => $sVal) {
+            $sVal = trim($sVal);
+            if(!empty($sVal)) $aData[$sKey] = self::api_dibs_utf8Fix($sVal);
+        }
+        $oOrder->items[] = $oOrder->ship;
+        if(isset($oOrder->items) && count($oOrder->items) > 0) {
+            $aData['oitypes'] = 'QUANTITY;UNITCODE;DESCRIPTION;AMOUNT;ITEMID;' .
+                                (self::$bTaxAmount ? 'VATAMOUNT' : 'VATPERCENT');
+            $aData['oinames'] = 'Qty;UnitCode;Description;Amount;ItemId;' .
+                                (self::$bTaxAmount ? 'VatAmount' : 'VatPercent');
+           
+            $i = 1;
+            foreach($oOrder->items as $oItem) {
+                $iTmpPrice = self::api_dibs_round($oItem->price);
+                if(!empty($iTmpPrice)) {
+                    $sTmpName = !empty($oItem->name) ? $oItem->name : $oItem->sku;
+                    if(empty($sTmpName)) $sTmpName = $oItem->id;
+
+                    $aData['oiRow' . $i++] = 
+                        self::api_dibs_round($oItem->qty, 3) / 1000 . ";" . 
+                        "pcs" . ";" . 
+                        self::api_dibs_utf8Fix(str_replace(";","\;",$sTmpName)) . ";" .
+                        $iTmpPrice . ";" .
+                        self::api_dibs_utf8Fix(str_replace(";","\;",$oItem->id)) . ";" .
+                        self::api_dibs_round($oItem->tax);
+                }
+                unset($iTmpPrice);
+            }
+	}
+        if(!empty($aData['orderid'])) $aData['yourRef'] = $aData['orderid'];
+        $sDistribType = $this->helper_dibs_tools_conf('distr');
+        if((string)$sDistribType != 'empty') $aData['distributiontype'] = strtoupper($sDistribType);
+    }   
     /**
      * Process DB preparations and adds empty transaction record before payment.
      * 
