@@ -124,9 +124,39 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      */
     function helper_dibs_obj_etc($mOrderInfo) {
         return (object)array(
-            'sysmod'      => 'znc1_4_1_0',
+            'sysmod'      => 'znc1_4_1_1',
             'callbackfix' => $this->helper_dibs_tools_url("ext/modules/payment/dibspw/callback.php")
         );
     }
+    
+    /**
+    * Build CMS customer addresses to API object.
+    * 
+    * @param mixed $mOrderInfo
+    * @return object 
+    */
+    function helper_dibs_addr($mOrderInfo) {
+        return array(
+            'shippingfirstname'  => $mOrderInfo->delivery['firstname'],
+            'shippinglastname'   => $mOrderInfo->delivery['lastname'],
+            'shippingpostalcode' => $mOrderInfo->delivery['postcode'],
+            'shippingpostalplace'=> $mOrderInfo->delivery['city'],
+            'shippingaddress2'   => $mOrderInfo->delivery['street_address'],
+            'shippingaddress'    => $mOrderInfo->delivery['country']['iso_code_3'] . " " . 
+                                    $mOrderInfo->delivery['state'],
+            
+            'billingfirstname'   => $mOrderInfo->billing['firstname'],
+            'billinglastname'    => $mOrderInfo->billing['lastname'],
+            'billingpostalcode'  => $mOrderInfo->billing['postcode'],
+            'billingpostalplace' => $mOrderInfo->billing['city'],
+            'billingaddress2'    => $mOrderInfo->billing['street_address'],
+            'billingaddress'     => $mOrderInfo->billing['country']['iso_code_3'] . " " . 
+                                    $mOrderInfo->billing['state'],
+            
+            'billingmobile'      => $mOrderInfo->customer['telephone'],
+            'billingemail'       => $mOrderInfo->customer['email_address']
+        );
+    }
+    
 }
 ?>

@@ -121,6 +121,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         $oOrder = $this->api_dibs_commonOrderObject($mOrderInfo);
         $this->api_dibs_prepareDB($oOrder->order->orderid);
         $this->api_dibs_commonFields($aData, $oOrder);
+        $aData =  array_merge($this->helper_dibs_addr($mOrderInfo), $aData);
         if(count($oOrder->etc) > 0) {
             foreach($oOrder->etc as $sKey => $sVal) $aData['s_' . $sKey] = $sVal;
         }
@@ -152,6 +153,8 @@ class dibs_pw_api extends dibs_pw_helpers {
         $aData['acceptreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->acceptreturnurl);
         $aData['cancelreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->cancelreturnurl);
         $aData['callbackurl']     = $oOrder->urls->callbackurl;
+        
+       
         if(strpos($aData['callbackurl'], '/5c65f1600b8_dcbf.php') === FALSE) {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
