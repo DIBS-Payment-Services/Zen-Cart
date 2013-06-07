@@ -94,8 +94,8 @@ class dibs_pw_api extends dibs_pw_helpers {
      */
     private function api_dibs_invoiceOrderObject($mOrderInfo) {
         return (object)array(
-            'items' => $this->helper_dibs_obj_items($mOrderInfo),
-            'ship'  => $this->helper_dibs_obj_ship($mOrderInfo),
+            /*'items' => $this->helper_dibs_obj_items($mOrderInfo),
+            'ship'  => $this->helper_dibs_obj_ship($mOrderInfo),*/
             'addr'  => $this->helper_dibs_obj_addr($mOrderInfo)
         );
     }
@@ -170,7 +170,7 @@ class dibs_pw_api extends dibs_pw_helpers {
             $sVal = trim($sVal);
             if(!empty($sVal)) $aData[$sKey] = self::api_dibs_utf8Fix($sVal);
         }
-        $oOrder->items[] = $oOrder->ship;
+        /*$oOrder->items[] = $oOrder->ship;
         if(isset($oOrder->items) && count($oOrder->items) > 0) {
             $aData['oitypes'] = 'QUANTITY;UNITCODE;DESCRIPTION;AMOUNT;ITEMID;' .
                                 (self::$bTaxAmount ? 'VATAMOUNT' : 'VATPERCENT');
@@ -194,7 +194,7 @@ class dibs_pw_api extends dibs_pw_helpers {
                 }
                 unset($iTmpPrice);
             }
-	}
+	    }*/
         if(!empty($aData['orderid'])) $aData['yourRef'] = $aData['orderid'];
         $sDistribType = $this->helper_dibs_tools_conf('distr');
         if((string)$sDistribType != 'empty') $aData['distributiontype'] = strtoupper($sDistribType);
