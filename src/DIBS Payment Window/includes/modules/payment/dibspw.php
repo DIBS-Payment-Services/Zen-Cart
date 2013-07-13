@@ -29,7 +29,7 @@ class dibspw extends dibs_pw_api {
     function dibspw() {
         global $order;
 
-        $this->signature = 'dibspw|dibspw|4.1.0|1.5.0';
+        $this->signature = 'dibspw|dibspw|4.1.1|1.5.0';
 
         $this->code = 'dibspw';
         $this->title = MODULE_PAYMENT_DIBSPW_TEXT_TITLE_MODULES;
@@ -102,7 +102,7 @@ class dibspw extends dibs_pw_api {
      */
     function cancel() {
         $this->api_dibs_action_cancel();
-        zen_redirect(zen_href_link(FILENAME_SHOPPING_CART,'','NONSSL'));
+        zen_redirect(zen_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
     }
     
     function check() {
