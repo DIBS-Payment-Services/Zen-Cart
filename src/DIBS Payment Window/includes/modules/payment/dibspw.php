@@ -1,5 +1,6 @@
 <?php
 /*
+  
   $Id$
 
   DIBS module for ZenCart
@@ -28,7 +29,7 @@ class dibspw extends dibs_pw_api {
     function dibspw() {
         global $order;
 
-        $this->signature = 'dibspw|dibspw|4.2.0|1.5.0';
+        $this->signature = 'dibspw|dibspw|4.1.1|1.5.0';
 
         $this->code = 'dibspw';
         $this->title = MODULE_PAYMENT_DIBSPW_TEXT_TITLE_MODULES;
