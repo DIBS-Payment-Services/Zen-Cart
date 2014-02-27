@@ -229,13 +229,19 @@ class dibspw extends dibs_pw_api {
                                       'descr' => 'Title of payment module that customer see on checkout.', 
                                       'order' => 2, 
                                       'sfunc' => 'NULL'),
-                                array('title' => 'Merchant ID:', 
+                               array('title' => 'Merchant ID:', 
                                       'cfkey' => 'MODULE_PAYMENT_DIBSPW_MID', 
                                       'value' => '', 
                                       'descr' => 'Your merchant ID in DIBS service.', 
                                       'order' => 3, 
                                       'sfunc' => 'NULL'),        
-                                array('title' => 'HMAC:', 
+        		      array('title' => 'Partner ID:', 
+                                      'cfkey' => 'MODULE_PAYMENT_DIBSPW_PID', 
+                                      'value' => '', 
+                                      'descr' => 'Partner ID', 
+                                      'order' => 3, 
+                                      'sfunc' => 'NULL'),        
+                              array('title' => 'HMAC:', 
                                       'cfkey' => 'MODULE_PAYMENT_DIBSPW_HMAC', 
                                       'value' => '', 
                                       'descr' => 'HMAC code for secured transactions.', 
@@ -323,13 +329,13 @@ class dibspw extends dibs_pw_api {
     function keys() {
         return array('MODULE_PAYMENT_DIBSPW_STATUS', 
                      'MODULE_PAYMENT_DIBSPW_TEXT_TITLE', 'MODULE_PAYMENT_DIBSPW_MID',
-                         'MODULE_PAYMENT_DIBSPW_HMAC',
-                     'MODULE_PAYMENT_DIBSPW_TESTMODE',   'MODULE_PAYMENT_DIBSPW_FEE',
+                     'MODULE_PAYMENT_DIBSPW_HMAC', 'MODULE_PAYMENT_DIBSPW_MID',
+                     'MODULE_PAYMENT_DIBSPW_TESTMODE','MODULE_PAYMENT_DIBSPW_FEE',
                      'MODULE_PAYMENT_DIBSPW_CAPTURENOW', 
-                     'MODULE_PAYMENT_DIBSPW_UNIQ',       'MODULE_PAYMENT_DIBSPW_PAYTYPE',
-                     'MODULE_PAYMENT_DIBSPW_LANG',       'MODULE_PAYMENT_DIBSPW_ACCOUNT',
-                     'MODULE_PAYMENT_DIBSPW_DISTR',      'MODULE_PAYMENT_DIBSPW_ORDER_STATUS_ID', 
-                     'MODULE_PAYMENT_DIBSPW_ZONE',       'MODULE_PAYMENT_DIBSPW_SORT_ORDER'
+                     'MODULE_PAYMENT_DIBSPW_UNIQ', 'MODULE_PAYMENT_DIBSPW_PAYTYPE',
+                     'MODULE_PAYMENT_DIBSPW_LANG', 'MODULE_PAYMENT_DIBSPW_ACCOUNT',
+                     'MODULE_PAYMENT_DIBSPW_DISTR','MODULE_PAYMENT_DIBSPW_ORDER_STATUS_ID', 
+                     'MODULE_PAYMENT_DIBSPW_ZONE', 'MODULE_PAYMENT_DIBSPW_SORT_ORDER'
         );
     }
 }
