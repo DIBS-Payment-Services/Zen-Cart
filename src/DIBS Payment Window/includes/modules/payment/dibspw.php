@@ -75,9 +75,7 @@ class dibspw extends dibs_pw_api {
     
     function after_process() {
 	global $_POST, $db, $insert_id, $order;
-
         $this->cms_dibs_completeCart($insert_id, $_POST['orderid']);
-        
         return false;
     }
 
@@ -85,6 +83,7 @@ class dibspw extends dibs_pw_api {
      * Succes page handler
      */
     function success() {
+        global $order; 
         return (isset($_POST['orderid'])) ? $this->api_dibs_action_success(null) :
                $this->helper_dibs_tools_lang(1, 'err');
     }
@@ -335,7 +334,8 @@ class dibspw extends dibs_pw_api {
                      'MODULE_PAYMENT_DIBSPW_UNIQ', 'MODULE_PAYMENT_DIBSPW_PAYTYPE',
                      'MODULE_PAYMENT_DIBSPW_LANG', 'MODULE_PAYMENT_DIBSPW_ACCOUNT',
                      'MODULE_PAYMENT_DIBSPW_DISTR','MODULE_PAYMENT_DIBSPW_ORDER_STATUS_ID', 
-                     'MODULE_PAYMENT_DIBSPW_ZONE', 'MODULE_PAYMENT_DIBSPW_SORT_ORDER'
+                     'MODULE_PAYMENT_DIBSPW_ZONE', 'MODULE_PAYMENT_DIBSPW_SORT_ORDER',
+                     'MODULE_PAYMENT_DIBSPW_PID'
         );
     }
 }

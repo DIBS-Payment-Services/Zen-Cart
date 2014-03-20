@@ -51,15 +51,32 @@ class dibs_pw_helpers_cms {
     }
     
     protected function cms_dibs_completeCart($iOrderId, $mCartId) {
+        $dibsInvoiceFields = array("acquirerLastName",          "acquirerFirstName",
+                                       "acquirerDeliveryAddress",   "acquirerDeliveryPostalCode",
+                                       "acquirerDeliveryPostalPlace" );
+        $dibsInvoiceFieldsString = "";
+        
+        
+         foreach($_POST as $key=>$value) {
+              if(in_array($key, $dibsInvoiceFields)) {
+                   $dibsInvoiceFieldsString .= "{$key}={$value}\n";              
+              }
+         } 
+            
+        
         $this->helper_dibs_db_write("UPDATE `" . $this->cms_dibs_get_tmpTableFullName() . "` 
                                     SET `orderid`='" . dibs_pw_api::api_dibs_sqlEncode($iOrderId) . "' 
                                     WHERE `session_cart_id`='" .
                                     dibs_pw_api::api_dibs_sqlEncode($mCartId) . "' LIMIT 1;");
         $this->helper_dibs_db_write("UPDATE `" . $this->helper_dibs_tools_prefix() . 
                                    "orders_status_history` 
-                                   SET `comments`=CONCAT('[DIBS Order ID: " . $mCartId . "] \n', `comments`) 
+                                   SET `comments`=CONCAT('[DIBS Order ID: " . $mCartId ."]\n ".  $dibsInvoiceFieldsString ." \n', `comments`) 
                                    WHERE `orders_id`='" . dibs_pw_api::api_dibs_sqlEncode($iOrderId) . 
                                    "' AND `orders_status_id`='" . $this->order_status . "' LIMIT 1;");
+        
+        
+         
+        
     }
     
     protected function cms_dibs_processHelperTable($oOrderInfo) {

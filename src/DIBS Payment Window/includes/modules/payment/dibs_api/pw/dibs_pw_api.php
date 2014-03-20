@@ -121,6 +121,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         $oOrder = $this->api_dibs_commonOrderObject($mOrderInfo);
         $this->api_dibs_prepareDB($oOrder->order->orderid);
         $this->api_dibs_commonFields($aData, $oOrder);
+        $this->api_dibs_invoiceFields($aData, $mOrderInfo);
         $aData =  array_merge($this->helper_dibs_addr($mOrderInfo), $aData);
         if(count($oOrder->etc) > 0) {
             foreach($oOrder->etc as $sKey => $sVal) $aData['s_' . $sKey] = $sVal;
@@ -153,8 +154,6 @@ class dibs_pw_api extends dibs_pw_helpers {
         $aData['acceptreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->acceptreturnurl);
         $aData['cancelreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->cancelreturnurl);
         $aData['callbackurl']     = $oOrder->urls->callbackurl;
-        
-       
         if(strpos($aData['callbackurl'], '/5c65f1600b8_dcbf.php') === FALSE) {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
@@ -361,6 +360,76 @@ class dibs_pw_api extends dibs_pw_helpers {
         
         return $sTmpl;
     }
+    
+        /**
+     * Adds Invoice API parameters specific for SAT PW.
+     * 
+     * @param array $aData
+     * @param object $oOrder 
+     */
+    private function api_dibs_invoiceFields(&$aData, $mOrderInfo) {
+        
+       
+        $oOrder = $this->api_dibs_invoiceOrderObject($mOrderInfo);
+        
+        foreach($oOrder->addr as $sKey => $sVal) {
+            $sVal = trim($sVal);
+            if(!empty($sVal)) $aData[$sKey] = self::api_dibs_utf8Fix($sVal);
+        }
+        $oOrder->items[] = $oOrder->ship;
+        if(isset($oOrder->items) && count($oOrder->items) > 0) {
+            $aData['oitypes'] = 'QUANTITY;UNITCODE;DESCRIPTION;AMOUNT;ITEMID;' .
+                                (self::$bTaxAmount ? 'VATAMOUNT' : 'VATPERCENT');
+            $aData['oinames'] = 'Qty;UnitCode;Description;Amount;ItemId;' .
+                                (self::$bTaxAmount ? 'VatAmount' : 'VatPercent');
+            $i = 1;
+            $totalPrice = 0;
+            foreach($oOrder->items as $oItem) {
+                $iTmpPrice = self::api_dibs_round($oItem->price);
+                if(!empty($iTmpPrice)) {
+                    $sTmpName = !empty($oItem->name) ? $oItem->name : $oItem->sku;
+                    if(empty($sTmpName)) $sTmpName = $oItem->id;
+
+                    $aData['oiRow' . $i++] = 
+                        self::api_dibs_round($oItem->qty, 3) / 1000 . ";" . 
+                        "pcs" . ";" . 
+                        self::api_dibs_utf8Fix(str_replace(";","\;",$sTmpName)) . ";" .
+                        $iTmpPrice . ";" .
+                        self::api_dibs_utf8Fix(str_replace(";","\;",$oItem->id)) . ";" .
+                        self::api_dibs_round($oItem->tax);
+                
+                       $totalPrice += ($iTmpPrice + self::api_dibs_round($oItem->tax)) *  self::api_dibs_round($oItem->qty, 3) / 1000;
+                }
+                unset($iTmpPrice);
+            }
+	}
+        $oOrder = $this->api_dibs_commonOrderObject($mOrderInfo);
+        $totalAmount = self::api_dibs_round($oOrder->order->amount);
+        if ($totalPrice != $totalAmount){
+              
+            
+               $delta = abs($totalPrice - $totalAmount);
+               
+               if(  $totalPrice > $totalAmount ) {
+                  $delta =  -1*$delta; 
+               }
+               
+               $aData['oiRow' . $i++] = "1;pcs;Rounding;$delta;round_id;0";
+           //  $totalPrice += $iTmpPrice + self::api_dibs_round($oItem->tax);
+        } 
+            
+        //echo $totalPrice."<br>";
+        // echo  self::api_dibs_round($oOrder->order->amount + 3);
+        // echo $delta."<br>";
+        // exit;
+       
+        
+        if(!empty($aData['orderid'])) $aData['yourRef'] = $aData['orderid'];
+        if((string)$this->helper_dibs_tools_conf('capturenow') == 'yes') $aData['capturenow'] = 1;
+        $sDistribType = $this->helper_dibs_tools_conf('distr');
+        if((string)$sDistribType != 'empty') $aData['distributiontype'] = strtoupper($sDistribType);
+    }
+
     
     /** DIBS API TOOLS START **/
     /**

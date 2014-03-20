@@ -124,7 +124,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      */
     function helper_dibs_obj_etc($mOrderInfo) {
         return (object)array(
-            'sysmod'      => 'znc1_4_1_2',
+            'sysmod'      => 'znc1_4_1_3',
             'callbackfix' => $this->helper_dibs_tools_url("ext/modules/payment/dibspw/callback.php")
         );
     }
@@ -157,6 +157,97 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
             'billingemail'       => $mOrderInfo->customer['email_address']
         );
     }
+    
+        /**
+     * Build CMS each ordered item information to API object.
+     * 
+     * @param mixed $mOrderInfo
+     * @return object 
+     */
+    function helper_dibs_obj_items($mOrderInfo) {
+        global $currencies;
+        
+        $iDec = $currencies->get_decimal_places($mOrderInfo->info['currency']);
+        $aItems = array();
+        foreach($mOrderInfo->products as $mItem) {
+            $mItem['price'] = isset($mItem['final_price']) ? $mItem['final_price'] : '0';
+            
+            $sTmpPrice = (isset($mOrderInfo->info['currency_value'])) ?
+                         ($mItem['final_price'] * $mOrderInfo->info['currency_value']) :
+                          $mItem['final_price'];
+            $mItem['tax'] = isset($mItem['tax']) ? $mItem['tax'] : '0';
+            $aItems[] = (object)array(
+                'id'         => $mItem['id'],
+                'name'       => $mItem['name'],
+                'sku'        => $mItem['model'],
+                'price'      => zen_round($sTmpPrice, $iDec),
+                'qty'        => $mItem['qty'],
+                'tax'        => zen_round(zen_calculate_tax($sTmpPrice, $mItem['tax']), $iDec)
+            );
+        }
+        
+        return $aItems;
+    }
+    
+       /**
+     * Build CMS shipping information to API object.
+     * 
+     * @param mixed $mOrderInfo
+     * @return object 
+     */
+  function helper_dibs_obj_ship($mOrderInfo) {
+        global $currencies;
+        
+        $iDec = $currencies->get_decimal_places($mOrderInfo->info['currency']);        
+        $sTax = isset($mOrderInfo->info['shipping_tax']) ? $mOrderInfo->info['shipping_tax'] : 0;
+        $mOrderInfo->info['shipping_cost'] = isset($mOrderInfo->info['shipping_cost']) ?
+                                             $mOrderInfo->info['shipping_cost']: '0';
+        $sRate = (isset($mOrderInfo->info['currency_value'])) ?
+                 ($mOrderInfo->info['shipping_cost'] * $mOrderInfo->info['currency_value']) :
+                  $mOrderInfo->info['shipping_cost'];
+        if(defined(DISPLAY_PRICE_WITH_TAX) && DISPLAY_PRICE_WITH_TAX == "true") $sRate -= $sTax;
+        
+        return (object)array(
+                'id'         => "shipping",
+                'name'       => "Shipping Rate",
+                'sku'        => "",
+                'price'      => zen_round($sRate, $iDec),
+                'qty'        => 1,
+                'tax'        => zen_round($sTax, $iDec)
+        );
+    }
+  
+       /**
+     * Build CMS customer addresses to API object.
+     * 
+     * @param mixed $mOrderInfo
+     * @return object 
+     */
+    function helper_dibs_obj_addr($mOrderInfo) {
+        return (object)array(
+            'shippingfirstname'  => $mOrderInfo->delivery['firstname'],
+            'shippinglastname'   => $mOrderInfo->delivery['lastname'],
+            'shippingpostalcode' => $mOrderInfo->delivery['postcode'],
+            'shippingpostalplace'=> $mOrderInfo->delivery['city'],
+            'shippingaddress2'   => $mOrderInfo->delivery['street_address'],
+            'shippingaddress'    => $mOrderInfo->delivery['country']['iso_code_3'] . " " . 
+                                    $mOrderInfo->delivery['state'],
+            
+            'billingfirstname'   => $mOrderInfo->billing['firstname'],
+            'billinglastname'    => $mOrderInfo->billing['lastname'],
+            'billingpostalcode'  => $mOrderInfo->billing['postcode'],
+            'billingpostalplace' => $mOrderInfo->billing['city'],
+            'billingaddress2'    => $mOrderInfo->billing['street_address'],
+            'billingaddress'     => $mOrderInfo->billing['country']['iso_code_3'] . " " . 
+                                    $mOrderInfo->billing['state'],
+            
+            'billingmobile'      => $mOrderInfo->customer['telephone'],
+            'billingemail'       => $mOrderInfo->customer['email_address']
+        );
+    }
+ 
+    
+ 
     
 }
 ?>
