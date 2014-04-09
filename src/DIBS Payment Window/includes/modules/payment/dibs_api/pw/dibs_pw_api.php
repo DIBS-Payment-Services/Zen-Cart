@@ -124,7 +124,11 @@ class dibs_pw_api extends dibs_pw_helpers {
         $this->api_dibs_invoiceFields($aData, $mOrderInfo);
         $aData =  array_merge($this->helper_dibs_addr($mOrderInfo), $aData);
         if(count($oOrder->etc) > 0) {
-            foreach($oOrder->etc as $sKey => $sVal) $aData['s_' . $sKey] = $sVal;
+            foreach($oOrder->etc as $sKey => $sVal)  {
+                if(!empty($sVal)){  
+                    $aData['s_' . $sKey] = $sVal;
+                }
+            }
         }
         array_walk($aData, create_function('&$val', '$val = trim($val);'));
         $sMAC = $this->api_dibs_calcMAC($aData, $this->helper_dibs_tools_conf('hmac'));
