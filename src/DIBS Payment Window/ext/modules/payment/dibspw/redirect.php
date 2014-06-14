@@ -24,8 +24,10 @@ unset($_POST['x'],$_POST['y'],$_POST['gv_redeem_code'],$_POST['securityToken']);
         
 $sOutput = '';
 foreach($_POST as $key=>$val) {
-    
-    $val = htmlentities($val, ENT_QUOTES, 'UTF-8'); 
+    // If store is running UTF-8, translate characters into HTML character entities.
+    if (strtoupper(CHARSET) == 'UTF-8') {
+      $val = htmlentities($val, ENT_QUOTES, 'UTF-8');
+    }
     $sOutput .= '<input type="hidden" name="' . $key . '" value="' . $val . '" />'."\r\n";
 }
 
