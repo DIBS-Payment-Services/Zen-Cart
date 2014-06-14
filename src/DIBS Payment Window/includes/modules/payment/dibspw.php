@@ -101,7 +101,7 @@ class dibspw extends dibs_pw_api {
      */
     function cancel() {
         $this->api_dibs_action_cancel();
-        zen_redirect(zen_href_link(FILENAME_SHOPPING_CART,'','NONSSL'));
+        zen_redirect(zen_href_link(FILENAME_CHECKOUT_PAYMENT, 'payment_error=dibspw&error=canceled', 'SSL', true, false));
     }
     
     function check() {
