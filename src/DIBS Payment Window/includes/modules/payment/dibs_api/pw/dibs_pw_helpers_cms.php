@@ -18,14 +18,14 @@ class dibs_pw_helpers_cms {
 	  		$this->extra .= '<span class="dibs-card-logos">';
 	  		$chunks = explode ( ",", $logos );
 	  		for($i = 0; $i < sizeof ( $chunks ); $i ++) {
-	  			$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '.gif" alt="' . strtolower ( $chunks [$i] ) . '" />&nbsp;';
+	  			$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '.png" alt="' . strtolower ( $chunks [$i] ) . '" />&nbsp;';
 	  		}
 	  		$this->extra .= '</span>';
 	  		if (MODULE_PAYMENT_DIBS_3DSECURE == "yes") {
 	  			$this->extra .= '<span class="dibs-card-3d-logos">';
 	  			for($i = 0; $i < sizeof ( $chunks ); $i ++) {
 	  				if ($chunks [$i] == "MC" || $chunks [$i] == "VISA") {
-	  					$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '_secure.gif" alt="' . strtolower ( $chunks [$i] ) . '_secure" />&nbsp;';
+	  					$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '_secure.png" alt="' . strtolower ( $chunks [$i] ) . '_secure" />&nbsp;';
 	  				}
 	  			}
 	  			$this->extra .= '</span>';
