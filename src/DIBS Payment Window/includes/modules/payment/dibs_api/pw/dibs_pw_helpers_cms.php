@@ -12,7 +12,7 @@ class dibs_pw_helpers_cms {
 	  		$logos = MODULE_PAYMENT_DIBS_LOGOS;
 	  		$logos = str_replace ( " ", "", $logos );
 			
-	  		$this->extra = '<div class="dibs-logo-box" style="border: 1px solid #7ba7c9; min-height: 35px;">';
+	  		$this->extra = '<div class="dibs-logo-box" style="border: 1px solid #7ba7c9; min-height: 35px; width: 100%">';
 	  		$this->extra .= '<div class="dibs-logo-box-inner" style="margin: 6px 0 2px 22px;">';
 	  		$this->extra .= '<img class="dibs-logo" src="images/dibs/dibs.png" alt="DIBS Payment Services">&nbsp;';
 	  		$this->extra .= '<span class="dibs-card-logos">';
