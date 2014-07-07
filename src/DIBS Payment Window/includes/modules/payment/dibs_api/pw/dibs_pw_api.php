@@ -443,20 +443,30 @@ class dibs_pw_api extends dibs_pw_helpers {
      * @param string $sHMAC
      * @param bool $bUrlDecode
      * @return string 
+     
+     * 
      */
+    
     final public static function api_dibs_calcMAC($aData, $sHMAC, $bUrlDecode = FALSE) {
         $sMAC = "";
         if(!empty($sHMAC)) {
-            $sData = "";
             if(isset($aData['MAC'])) unset($aData['MAC']);
-            ksort($aData);
-            foreach($aData as $sKey => $sVal) {
-                $sData .= "&" . $sKey . "=" . (($bUrlDecode === TRUE) ? urldecode($sVal) : $sVal);
-            }
-            $sMAC = hash_hmac("sha256", ltrim($sData, "&"), self::api_dibs_hextostr($sHMAC));
+            //Decode the hex encoded key
+            $K = pack('H*', $sHMAC);
+
+            //Sort the key=>value array ASCII-betically according to the key
+            ksort($aData, SORT_STRING);
+
+            //Create message from sorted array.
+            $msg = urldecode(http_build_query($aData));
+
+            //Calculate and return the SHA-256 HMAC using algorithm for 1 key
+            $sMAC = hash_hmac("sha256", $msg, $K);
         }
         return $sMAC;
     }
+    
+    
     
     
     /**
