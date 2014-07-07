@@ -6,12 +6,43 @@ class dibs_pw_helpers_cms {
     public static function cms_dibs_get_order2sessionTable() {
         return self::$sTableOrderToSession;
     }
-    
+
+  	protected function getLogos() {
+	  	if (MODULE_PAYMENT_DIBS_LOGOS != "") {
+	  		$logos = MODULE_PAYMENT_DIBS_LOGOS;
+	  		$logos = str_replace ( " ", "", $logos );
+			
+	  		$this->extra = '<div class="dibs-logo-box" style="border: 1px solid #7ba7c9; min-height: 35px; width: 100%">';
+	  		$this->extra .= '<div class="dibs-logo-box-inner" style="margin: 6px 0 2px 22px;">';
+	  		$this->extra .= '<img class="dibs-logo" src="images/dibs/dibs.png" alt="DIBS Payment Services">&nbsp;';
+	  		$this->extra .= '<span class="dibs-card-logos">';
+	  		$chunks = explode ( ",", $logos );
+	  		for($i = 0; $i < sizeof ( $chunks ); $i ++) {
+	  			$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '.png" alt="' . strtolower ( $chunks [$i] ) . '" />&nbsp;';
+	  		}
+	  		$this->extra .= '</span>';
+	  		if (MODULE_PAYMENT_DIBS_3DSECURE == "yes") {
+	  			$this->extra .= '<span class="dibs-card-3d-logos">';
+	  			for($i = 0; $i < sizeof ( $chunks ); $i ++) {
+	  				if ($chunks [$i] == "MC" || $chunks [$i] == "VISA") {
+	  					$this->extra .= '<img src="images/dibs/' . strtolower ( $chunks [$i] ) . '_secure.png" alt="' . strtolower ( $chunks [$i] ) . '_secure" />&nbsp;';
+	  				}
+	  			}
+	  			$this->extra .= '</span>';
+	  		}
+	  		$this->extra .= '</div>';
+	  		$this->extra .= '</div>';
+	  	} else {
+	  		$this->extra = false;
+	  	}
+	  	return $this->extra;
+	  }
+	    
     protected function cms_dibs_get_title() {
-        return '<img src="images/DIBSPW/dibspw.gif" alt="DIBS Payment Services" ' .
-               'style="vertical-align: middle; margin-right: 10px;" />' . $this->public_title . 
-               (strlen(MODULE_PAYMENT_DIBSPW_TEXT_PUBLIC_DESCRIPTION) > 0 ? ' (' . 
+        $this->display = $this->public_title . (strlen(MODULE_PAYMENT_DIBSPW_TEXT_PUBLIC_DESCRIPTION) > 0 ? ' (' . 
                MODULE_PAYMENT_DIBSPW_TEXT_PUBLIC_DESCRIPTION . ')' : '');
+        $this->display .= $this->getLogos();
+        return $this->display;
     }
     
     private function cms_dibs_db_read($sQuery) {
