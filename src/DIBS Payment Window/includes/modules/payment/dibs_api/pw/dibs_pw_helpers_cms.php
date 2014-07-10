@@ -84,7 +84,7 @@ class dibs_pw_helpers_cms {
     protected function cms_dibs_completeCart($iOrderId, $mCartId) {
         $dibsInvoiceFields = array("acquirerLastName",          "acquirerFirstName",
                                        "acquirerDeliveryAddress",   "acquirerDeliveryPostalCode",
-                                       "acquirerDeliveryPostalPlace" );
+                                       "acquirerDeliveryPostalPlace", "transaction" );
         $dibsInvoiceFieldsString = "";
         
         
