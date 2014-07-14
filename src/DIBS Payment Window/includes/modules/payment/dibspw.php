@@ -230,7 +230,7 @@ class dibspw extends dibs_pw_api {
                                       'order' => 2, 
                                       'ufunc' => 'NULL', 
                                       'sfunc' => 'NULL'),
-                               array('title' => 'Merchant ID:', 
+                               array('title' => 'DIBS Integration ID:', 
                                       'cfkey' => 'MODULE_PAYMENT_DIBSPW_MID', 
                                       'value' => '', 
                                       'descr' => 'Your merchant ID in DIBS service.', 
