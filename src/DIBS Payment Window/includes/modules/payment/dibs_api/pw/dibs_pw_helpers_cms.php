@@ -109,7 +109,7 @@ class dibs_pw_helpers_cms {
                                             '" . $this->order_status . "',
                                             now(),
                                             0,
-                                            'DIBS Order ID: " . $mCartId ."')");
+                                            'DIBS Order ID: ". $mCartId ."\n ". $dibsInvoiceFieldsString ."')");
         
         
          
