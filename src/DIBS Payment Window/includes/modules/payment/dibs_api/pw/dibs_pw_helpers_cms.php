@@ -99,11 +99,17 @@ class dibs_pw_helpers_cms {
                                     SET `orderid`='" . dibs_pw_api::api_dibs_sqlEncode($iOrderId) . "' 
                                     WHERE `session_cart_id`='" .
                                     dibs_pw_api::api_dibs_sqlEncode($mCartId) . "' LIMIT 1;");
-        $this->helper_dibs_db_write("UPDATE `" . $this->helper_dibs_tools_prefix() . 
-                                   "orders_status_history` 
-                                   SET `comments`=CONCAT('[DIBS Order ID: " . $mCartId ."]\n ".  $dibsInvoiceFieldsString ." \n', `comments`) 
-                                   WHERE `orders_id`='" . dibs_pw_api::api_dibs_sqlEncode($iOrderId) . 
-                                   "' AND `orders_status_id`='" . $this->order_status . "' LIMIT 1;");
+        $this->helper_dibs_db_write("INSERT INTO `" . $this->helper_dibs_tools_prefix() . "orders_status_history`(
+                                            `orders_id`,
+                                            `orders_status_id`,
+                                            `date_added`,
+                                            `customer_notified`,
+                                            `comments`)
+                                    VALUES ('" . dibs_pw_api::api_dibs_sqlEncode($iOrderId) . "',
+                                            '" . $this->order_status . "',
+                                            now(),
+                                            0,
+                                            'DIBS Order ID: ". $mCartId ."\n ". $dibsInvoiceFieldsString ."')");
         
         
          
