@@ -207,7 +207,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
         $sRate = (isset($mOrderInfo->info['currency_value'])) ?
                  ($mOrderInfo->info['shipping_cost'] * $mOrderInfo->info['currency_value']) :
                   $mOrderInfo->info['shipping_cost'];
-        if(defined(DISPLAY_PRICE_WITH_TAX) && DISPLAY_PRICE_WITH_TAX == "true") $sRate -= $sTax;
+        if((defined(DISPLAY_PRICE_WITH_TAX) && DISPLAY_PRICE_WITH_TAX == "true") && $sRate > $sTax) $sRate -= $sTax;
         
         return (object)array(
                 'id'         => "shipping",
